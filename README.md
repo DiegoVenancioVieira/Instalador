@@ -10,3 +10,8 @@ Este repositório contém um instalador automático para o Whaticket, configurad
    ```bash
    git clone https://github.com/seurepositorio/whaticket-installer.git
    cd whaticket-installer
+
+
+
+Usuario: admin@admin.com
+Senha: 123456
