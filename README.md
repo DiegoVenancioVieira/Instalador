@@ -1,0 +1,2 @@
+# Instalador
+Instalador do whaticket
