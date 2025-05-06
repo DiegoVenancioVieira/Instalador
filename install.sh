@@ -2,7 +2,7 @@
 
 CONFIG_FILE=".install-config"
 read -p "Cole aqui seu token GitHub (fine-grained): " GITHUB_TOKEN
-WHATICKET_REPO_URL="https://${GITHUB_TOKEN}@github.com/DiegoVenancioVieira/whaticketmaster.git"
+WHATICKET_REPO_URL=git clone https://${GITHUB_TOKEN}@github.com/DiegoVenancioVieira/whaticketmaster.git
 
 WHATICKET_DIR="../whaticketmaster"
 
