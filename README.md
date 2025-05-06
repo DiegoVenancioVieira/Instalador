@@ -1,4 +1,3 @@
-
 # 📦 Instalador Whaticket Master
 
 Bem-vindo ao instalador automático do **Whaticket Master**!
@@ -56,17 +55,35 @@ bash install.sh
 ```
 
 🔑 O instalador irá solicitar que você cole o **token de acesso do GitHub**.
-> Solicite o token de acesso no whatsapp: .
+> Solicite o token de acesso no whatsapp: 
 
 ---
 
-### 🌐 Acesse seu sistema
+### 4️⃣ Acesse seu sistema
 
 Após a instalação, acesse:
 
 - 🖥️ Painel Web (Frontend): `https://app.seusite.com.br`
 - 🔗 API (Backend): `https://api.seusite.com.br`
 - ⚙️ Portainer: `https://portainer.seusite.com.br` *(se já estiver instalado)*
+
+---
+
+### 🔍 Verificar se o Whaticket está funcionando
+
+Para verificar **somente os containers do Whaticket**, execute:
+
+```bash
+docker ps --filter name=whaticket
+```
+
+Você deverá ver 4 containers: `whaticket_backend`, `whaticket_frontend`, `postgres_whaticket` e `whaticket_redis`.
+
+Para ver logs em tempo real do backend:
+
+```bash
+docker logs -f whaticketmaster-whaticket_backend-1
+```
 
 ---
 
@@ -81,8 +98,7 @@ Caso algo não funcione como esperado:
 ```bash
 docker compose logs -f
 ```
-- Copie e enviar o log de erro para o whatsapp: 
----
+- Copiar e enviar o log de erro para o whatsapp:
 
 Feito com ❤️ para facilitar sua jornada digital.
 
