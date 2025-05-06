@@ -10,19 +10,19 @@ git clone https://github.com/SEU_USUARIO/whaticket-installer.git
 cd whaticket-installer
 ```
 
-### 2. Clone também o projeto Whaticket
+### 2. Execute o instalador
 ```bash
-git clone https://github.com/SEU_USUARIO/whaticketmaster.git
+bash install.sh
 ```
 
-Sua estrutura deve ficar assim:
-```
-📂 sua-pasta/
-├── 📁 whaticket-installer/
-├── 📁 whaticketmaster/
-```
+O script irá:
+- Clonar automaticamente o projeto do Whaticket (sem você precisar baixar separado);
+- Usar as variáveis do `.install-config` (ou perguntar caso ele não exista);
+- Gerar o `.env` automaticamente;
+- Substituir valores nos arquivos do projeto;
+- Subir o ambiente com Docker Compose.
 
-### 3. Configure o instalador
+### 3. Configure (se quiser)
 Edite `.install-config.example` com suas informações e salve como `.install-config`:
 
 ```bash
@@ -30,14 +30,7 @@ cp .install-config.example .install-config
 nano .install-config
 ```
 
-### 4. Execute o instalador
-```bash
-bash install.sh
-```
-
-Ele irá gerar o `.env`, aplicar variáveis nos arquivos do projeto e subir o ambiente com Docker.
-
-### 5. Acesse sua instalação
+### 4. Acesse sua instalação
 - Painel: `https://app.seusite.com.br`
 - API: `https://api.seusite.com.br`
 
