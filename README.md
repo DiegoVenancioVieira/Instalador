@@ -26,21 +26,26 @@ cd Instalador
 ### 2️⃣ Configure as variáveis do sistema
 
 Edite o arquivo `.install-config.example` com suas informações e salve como `.install-config`:
+Preencha com os domínios, senha do banco, e-mail SMTP, entre outros.
+> 🧠 **Dica:** Isso evita que você tenha que digitar tudo durante a instalação.
 
 ```bash
 cp .install-config.example .install-config
 nano .install-config
 ```
 
-Preencha com os domínios, senha do banco, e-mail SMTP, entre outros.
+💾 Salvar e sair no nano
+Pressione Ctrl + O para salvar (vai aparecer algo como “File Name to Write: .install-config”).
+Pressione Enter para confirmar o nome do arquivo.
+Pressione Ctrl + X para sair do editor.
 
-> 🧠 **Dica:** Isso evita que você tenha que digitar tudo durante a instalação.
 
 ---
 
 ### 3️⃣ Execute o instalador
 
 ```bash
+cd /opt/Instalador
 bash install.sh
 ```
 
