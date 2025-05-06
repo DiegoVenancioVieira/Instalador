@@ -1,32 +1,46 @@
-# Exemplo de configuração do instalador
-BACKEND_URL=https://api.seudominio.com.br  
-FRONTEND_URL=https://app.seudominio.com.br 
+# Configurações do Banco de Dados
 DB_HOST=postgres_whaticket
 DB_PORT=5432
 DB_USER=postgres
-DB_PASS=12345
+DB_PASS=sua_senha_aqui
 DB_NAME=whaticket
 TZ=America/Sao_Paulo
-JWT_SECRET=seuJWT
-JWT_REFRESH_SECRET=seuJWTRefresh
+
+# JWT Tokens (serão gerados automaticamente se não definidos)
+JWT_SECRET=
+JWT_REFRESH_SECRET=
 PORT=3000
 PROXY_PORT=443
+
+# Endereços do sistema
+BACKEND_URL=https://api.seusite.com.br
+FRONTEND_URL=https://app.seusite.com.br
+REACT_APP_BACKEND_URL=https://api.seusite.com.br
+REACT_APP_HOURS_CLOSE_TICKETS_AUTO=24
+
+# Configurações do Chrome headless
 CHROME_ARGS="--no-sandbox --disable-setuid-sandbox"
+
+# Redis
 REDIS_URI=redis://:12345@whaticket_redis:6379
 REDIS_OPT_LIMITER_MAX=1
 REDIS_OPT_LIMITER_DURATION=3000
+
+# Limites de uso
+USER_LIMIT=10000
+CONNECTIONS_LIMIT=100000
+CLOSED_SEND_BY_ME=true
+
+# SMTP
+MAIL_HOST=smtp.hostinger.com
+MAIL_USER=contato@seusite.com.br
+MAIL_PASS=sua_senha_smtp
+MAIL_FROM="Suporte Whaticket <contato@seusite.com.br>"
+MAIL_PORT=587
+
+# Integração com Gerencianet (opcional)
 GERENCIANET_SANDBOX=false
 GERENCIANET_CLIENT_ID=
 GERENCIANET_CLIENT_SECRET=
 GERENCIANET_PIX_CERT=
 GERENCIANET_PIX_KEY=
-USER_LIMIT=10000
-CONNECTIONS_LIMIT=100000
-CLOSED_SEND_BY_ME=true
-MAIL_HOST=smtp.hostinger.com       
-MAIL_USER=contato@seudominio.com   
-MAIL_PASS=senha                    
-MAIL_FROM="Recuperar Senha <contato@seudominio.com>" 
-MAIL_PORT=465                      
-REACT_APP_BACKEND_URL=https://api.seudominio.com.br 
-REACT_APP_HOURS_CLOSE_TICKETS_AUTO=24
