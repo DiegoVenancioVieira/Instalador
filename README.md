@@ -16,6 +16,7 @@ Este instalador foi criado para facilitar a vida de quem não tem familiaridade 
 Abra o terminal do seu servidor e execute:
 
 ```bash
+cd /opt
 git clone https://github.com/DiegoVenancioVieira/Instalador.git
 cd Instalador
 ```
