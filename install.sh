@@ -1,28 +1,23 @@
 #!/bin/bash
-
-CONFIG_FILE=".install-config"
-read -p "Cole aqui seu token GitHub (fine-grained): " GITHUB_TOKEN
-WHATICKET_REPO_URL=git clone https://${GITHUB_TOKEN}@github.com/DiegoVenancioVieira/whaticketmaster.git
-
-WHATICKET_DIR="../whaticketmaster"
+set -e
 
 echo "🚀 Instalador Whaticket Master"
 echo "=============================="
 
-# Clonar repositório do Whaticket se não existir
-if [ ! -d "$WHATICKET_DIR" ]; then
-  echo "📥 Clonando repositório Whaticket..."
-  git clone $WHATICKET_REPO_URL $WHATICKET_DIR
-else
-  echo "📁 Repositório do Whaticket já está presente. Pulando clone."
-fi
+# Solicita token do GitHub
+read -p "Cole aqui seu token GitHub (fine-grained): " GITHUB_TOKEN
 
-# Carrega variáveis do arquivo .install-config ou pergunta ao usuário
-if [ -f "$CONFIG_FILE" ]; then
-  echo "🔍 Lendo variáveis de $CONFIG_FILE"
-  export $(grep -v '^#' "$CONFIG_FILE" | xargs)
-else
-  echo "⚠️ Arquivo $CONFIG_FILE não encontrado. Vamos criar um novo com as informações."
+# Valida token e clona repositório
+echo "📥 Clonando repositório Whaticket..."
+git clone https://${GITHUB_TOKEN}@github.com/DiegoVenancioVieira/whaticketmaster.git ../whaticketmaster || {
+  echo "❌ Erro ao clonar repositório. Verifique token ou permissões."
+  exit 1
+}
+
+# Carrega ou cria arquivo .install-config
+CONFIG_FILE=".install-config"
+if [ ! -f "$CONFIG_FILE" ]; then
+  echo "⚠️ Arquivo .install-config não encontrado. Vamos criar um novo com as informações."
 
   read -p "Domínio do BACKEND (ex: api.exemplo.com.br): " BACKEND_URL
   read -p "Domínio do FRONTEND (ex: app.exemplo.com.br): " FRONTEND_URL
@@ -32,80 +27,68 @@ else
   read -p "Senha SMTP: " MAIL_PASS
   read -p "Nome de envio do e-mail (ex: Suporte <contato@seudominio.com>): " MAIL_FROM
 
-  DB_HOST="postgres_whaticket"
-  DB_PORT="5432"
-  DB_USER="postgres"
-  DB_NAME="whaticket"
-  JWT_SECRET=$(openssl rand -base64 32)
-  JWT_REFRESH_SECRET=$(openssl rand -base64 32)
-  PORT="3000"
-  PROXY_PORT="443"
-  CHROME_ARGS="--no-sandbox --disable-setuid-sandbox"
-  REDIS_URI="redis://:$DB_PASS@whaticket_redis:6379"
-  REDIS_OPT_LIMITER_MAX="1"
-  REDIS_OPT_LIMITER_DURATION="3000"
-  GERENCIANET_SANDBOX="false"
-  GERENCIANET_CLIENT_ID=""
-  GERENCIANET_CLIENT_SECRET=""
-  GERENCIANET_PIX_CERT=""
-  GERENCIANET_PIX_KEY=""
-  USER_LIMIT="10000"
-  CONNECTIONS_LIMIT="100000"
-  CLOSED_SEND_BY_ME="true"
-  MAIL_HOST="smtp.hostinger.com"
-  MAIL_PORT="465"
-  REACT_APP_BACKEND_URL="https://$BACKEND_URL"
-  REACT_APP_HOURS_CLOSE_TICKETS_AUTO="24"
-
   cat <<EOF > $CONFIG_FILE
-BACKEND_URL=https://$BACKEND_URL
-FRONTEND_URL=https://$FRONTEND_URL
-DB_HOST=$DB_HOST
-DB_PORT=$DB_PORT
-DB_USER=$DB_USER
+DB_HOST=postgres_whaticket
+DB_PORT=5432
+DB_USER=postgres
 DB_PASS=$DB_PASS
-DB_NAME=$DB_NAME
+DB_NAME=whaticket
 TZ=$TZ
-JWT_SECRET=$JWT_SECRET
-JWT_REFRESH_SECRET=$JWT_REFRESH_SECRET
-PORT=$PORT
-PROXY_PORT=$PROXY_PORT
-CHROME_ARGS=$CHROME_ARGS
-REDIS_URI=$REDIS_URI
-REDIS_OPT_LIMITER_MAX=$REDIS_OPT_LIMITER_MAX
-REDIS_OPT_LIMITER_DURATION=$REDIS_OPT_LIMITER_DURATION
-GERENCIANET_SANDBOX=$GERENCIANET_SANDBOX
-GERENCIANET_CLIENT_ID=$GERENCIANET_CLIENT_ID
-GERENCIANET_CLIENT_SECRET=$GERENCIANET_CLIENT_SECRET
-GERENCIANET_PIX_CERT=$GERENCIANET_PIX_CERT
-GERENCIANET_PIX_KEY=$GERENCIANET_PIX_KEY
-USER_LIMIT=$USER_LIMIT
-CONNECTIONS_LIMIT=$CONNECTIONS_LIMIT
-CLOSED_SEND_BY_ME=$CLOSED_SEND_BY_ME
-MAIL_HOST=$MAIL_HOST
+
+JWT_SECRET=$(openssl rand -base64 32)
+JWT_REFRESH_SECRET=$(openssl rand -base64 32)
+PORT=3000
+PROXY_PORT=443
+BACKEND_URL=$BACKEND_URL
+FRONTEND_URL=$FRONTEND_URL
+CHROME_ARGS="--no-sandbox --disable-setuid-sandbox"
+
+REDIS_URI=redis://:12345@whaticket_redis:6379
+REDIS_OPT_LIMITER_MAX=1
+REDIS_OPT_LIMITER_DURATION=3000
+
+GERENCIANET_SANDBOX=false
+GERENCIANET_CLIENT_ID=
+GERENCIANET_CLIENT_SECRET=
+GERENCIANET_PIX_CERT=
+GERENCIANET_PIX_KEY=
+
+USER_LIMIT=10000
+CONNECTIONS_LIMIT=100000
+CLOSED_SEND_BY_ME=true
+
+MAIL_HOST=smtp.hostinger.com
 MAIL_USER=$MAIL_USER
 MAIL_PASS=$MAIL_PASS
-MAIL_FROM=$MAIL_FROM
-MAIL_PORT=$MAIL_PORT
-REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
-REACT_APP_HOURS_CLOSE_TICKETS_AUTO=$REACT_APP_HOURS_CLOSE_TICKETS_AUTO
+MAIL_FROM="$MAIL_FROM"
+MAIL_PORT=465
+
+REACT_APP_BACKEND_URL=$BACKEND_URL
+REACT_APP_HOURS_CLOSE_TICKETS_AUTO=24
 EOF
 
-  echo "✅ Arquivo $CONFIG_FILE criado."
-  export $(grep -v '^#' "$CONFIG_FILE" | xargs)
+  echo "✅ Arquivo .install-config criado."
 fi
 
-echo ""
-echo "📦 Gerando arquivos de ambiente..."
-cp $WHATICKET_DIR/.env.example $WHATICKET_DIR/.env
+echo "📦 Lendo e exportando variáveis..."
+source "$CONFIG_FILE"
 
+# Cria .env a partir do modelo
+echo "📦 Gerando arquivos de ambiente..."
+if [ ! -f ../whaticketmaster/.env.example ]; then
+  echo "❌ .env.example ausente no repositório. Abortando."
+  exit 1
+fi
+cp ../whaticketmaster/.env.example ../whaticketmaster/.env
+
+# Aplica variáveis
 echo "🔧 Aplicando variáveis nos arquivos..."
-chmod +x ./add-env-vars.sh
+chmod +x add-env-vars.sh
 ./add-env-vars.sh
 
+# Sobe os containers
 echo "🐳 Subindo containers com Docker Compose..."
-cd $WHATICKET_DIR
-docker compose up -d --build
+cd ../whaticketmaster
+docker compose up -d
 
-echo ""
 echo "✅ Instalação concluída com sucesso!"
