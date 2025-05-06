@@ -26,19 +26,25 @@ cd Instalador
 ### 2️⃣ Configure as variáveis do sistema
 
 Edite o arquivo `.install-config.example` com suas informações e salve como `.install-config`:
-Preencha com os domínios, senha do banco, e-mail SMTP, entre outros.
-> 🧠 **Dica:** Isso evita que você tenha que digitar tudo durante a instalação.
 
 ```bash
 cp .install-config.example .install-config
 nano .install-config
 ```
 
-💾 Salvar e sair no nano
-Pressione Ctrl + O para salvar (vai aparecer algo como “File Name to Write: .install-config”).
-Pressione Enter para confirmar o nome do arquivo.
-Pressione Ctrl + X para sair do editor.
+💡 Caso apareça erro informando que `nano` não foi encontrado, instale com:
 
+```bash
+sudo apt update && sudo apt install nano -y
+cp .install-config.example .install-config
+nano .install-config
+```
+
+✍️ Preencha com os domínios, senha do banco, e-mail SMTP, entre outros.
+
+💾 Salvar e sair no nano:
+- Pressione `Ctrl + O` e depois `Enter` para salvar.
+- Pressione `Ctrl + X` para sair.
 
 ---
 
@@ -49,12 +55,8 @@ cd /opt/Instalador
 bash install.sh
 ```
 
-O script irá:
-- ✅ Clonar automaticamente o projeto do Whaticket (com token de acesso);
-- ✅ Ler suas variáveis do `.install-config` (ou perguntar se não existir);
-- ✅ Gerar o arquivo `.env` pronto;
-- ✅ Substituir os valores corretos nos arquivos do sistema;
-- ✅ Subir todos os containers com Docker Compose.
+🔑 O instalador irá solicitar que você cole o **token de acesso do GitHub**.
+> Solicite o token de acesso no whatsapp: .
 
 ---
 
@@ -79,9 +81,9 @@ Caso algo não funcione como esperado:
 ```bash
 docker compose logs -f
 ```
-
+- Copie e enviar o log de erro para o whatsapp: 
 ---
 
 Feito com ❤️ para facilitar sua jornada digital.
 
-Whaticket Master - Sua comunicação mais inteligente.
+**Whaticket Master – Sua comunicação mais inteligente.**
